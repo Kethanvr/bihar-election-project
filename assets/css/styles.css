@@ -1,0 +1,137 @@
+/* Custom Styles for Bihar Elections Dashboard */
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Body styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card hover effects - enhanced */
+.card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Table styles */
+table {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Chart container styles */
+canvas {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+/* Responsive table wrapper */
+.overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for webkit browsers */
+.overflow-x-auto::-webkit-scrollbar {
+    height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #e5e7eb;
+    }
+    
+    header {
+        border-bottom: 2px solid #000;
+    }
+    
+    footer {
+        border-top: 2px solid #000;
+    }
+}
+
+/* Responsive enhancements */
+@media (max-width: 640px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .card {
+        padding: 1rem;
+    }
+}
+
+/* Animation for page load */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Enhance badge styles */
+.inline-block {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* Table row hover enhancement */
+tr:hover {
+    background-color: rgba(243, 244, 246, 0.5);
+    transition: background-color 0.2s ease;
+}
+

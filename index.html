@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bihar Assembly Elections 2025 - Dashboard</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'nda': '#E67E3D',
+                        'bjp': '#FF9933',
+                        'jdu': '#2E7D32',
+                        'rjd': '#00A651',
+                        'inc': '#19AAED',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center">
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Bihar Assembly Elections 2025</h1>
+                <p class="text-base sm:text-lg text-gray-600 font-normal">Comprehensive Research Dashboard</p>
+                <p class="text-sm text-gray-500 mt-2">Results Declared: November 14, 2025</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Hero Metrics Section -->
+        <section id="hero-metrics" class="mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                <!-- KPI Cards will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Alliance Performance Section -->
+        <section id="alliance-performance" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Alliance Performance</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Seat Distribution</h3>
+                    <div class="relative h-64">
+                        <canvas id="allianceSeatChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Vote Share (%)</h3>
+                    <div class="relative h-64">
+                        <canvas id="allianceVoteChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Party Performance Section -->
+        <section id="party-performance" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Party-wise Performance</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Seats Won by Party</h3>
+                    <div class="relative h-80">
+                        <canvas id="partySeatsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card overflow-x-auto">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Detailed Results</h3>
+                    <div id="partyTable"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Election Statistics Section -->
+        <section id="election-stats" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Election Statistics</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Gender-wise Voter Turnout</h3>
+                    <div class="relative h-64">
+                        <canvas id="genderTurnoutChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Phase-wise Turnout</h3>
+                    <div class="relative h-64">
+                        <canvas id="phaseTurnoutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Historical Comparison Section -->
+        <section id="historical-comparison" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">2020 vs 2025 Comparison</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Seat Changes</h3>
+                    <div class="relative h-80">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card overflow-x-auto">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Comparison Table</h3>
+                    <div id="comparisonTable"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Victory Margins Section -->
+        <section id="victory-margins" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Victory Margins</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Largest Victory Margins</h3>
+                    <div class="relative h-96">
+                        <canvas id="largestMarginsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Closest Contests</h3>
+                    <div class="relative h-96">
+                        <canvas id="closestContestsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Women's Representation Section -->
+        <section id="women-representation" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Women's Representation</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-md p-6 card text-center">
+                    <div class="text-3xl font-bold text-gray-900 mb-2" id="womenCandidates">-</div>
+                    <div class="text-sm text-gray-600">Women Candidates</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="womenWinners">-</div>
+                    <div class="text-sm text-gray-600">Women Winners</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 card text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2" id="womenSuccessRate">-</div>
+                    <div class="text-sm text-gray-600">Success Rate</div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 card">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Party-wise Women Winners</h3>
+                <div class="relative h-64">
+                    <canvas id="womenPartyChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Caste Demographics Section -->
+        <section id="caste-demographics" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Caste Demographics (Bihar 2023 Survey)</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 card">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Composition</h3>
+                        <div class="relative h-80">
+                            <canvas id="casteDemographicsChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Key Insights</h3>
+                        <div class="space-y-4 text-sm text-gray-700">
+                            <div class="border-l-4 border-blue-500 pl-4 py-2">
+                                <p class="font-semibold">Extremely Backward Classes (EBC)</p>
+                                <p class="text-gray-600">36.01% of population - Largest demographic group with 112 sub-castes</p>
+                            </div>
+                            <div class="border-l-4 border-green-500 pl-4 py-2">
+                                <p class="font-semibold">Other Backward Classes (OBC)</p>
+                                <p class="text-gray-600">27.12% - Includes Yadav, Kurmi, Koeri, Kushwaha communities</p>
+                            </div>
+                            <div class="border-l-4 border-purple-500 pl-4 py-2">
+                                <p class="font-semibold">Scheduled Castes (SC)</p>
+                                <p class="text-gray-600">19.65% - Various Dalit communities</p>
+                            </div>
+                            <div class="border-l-4 border-orange-500 pl-4 py-2">
+                                <p class="font-semibold">General/Upper Castes</p>
+                                <p class="text-gray-600">15.38% - Brahmin, Bhumihar, Rajput, Kayastha</p>
+                            </div>
+                            <div class="border-l-4 border-red-500 pl-4 py-2">
+                                <p class="font-semibold">Scheduled Tribes (ST)</p>
+                                <p class="text-gray-600">1.68% - Tribal communities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notable Winners Section -->
+        <section id="notable-winners" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Notable Winners</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 card overflow-x-auto">
+                <div id="winnersTable"></div>
+            </div>
+        </section>
+
+        <!-- Notable Losers Section -->
+        <section id="notable-losers" class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Notable Losers</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 card overflow-x-auto">
+                <div id="losersTable"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-center text-sm text-gray-600">
+                Data Source: Election Commission of India | Research Dashboard Project 2025
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="assets/js/dataLoader.js"></script>
+    <script src="assets/js/charts.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+</html>
+
