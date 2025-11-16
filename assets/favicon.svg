@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#E67E3D" stroke="#FF9933" stroke-width="3"/>
+  
+  <!-- Ballot box (simplified design) -->
+  <rect x="30" y="45" width="40" height="30" fill="#FFFFFF" rx="2"/>
+  <rect x="28" y="43" width="44" height="4" fill="#FFFFFF" rx="1"/>
+  
+  <!-- Ballot paper going into box -->
+  <rect x="42" y="28" width="16" height="22" fill="#19AAED" rx="1"/>
+  <line x1="46" y1="33" x2="54" y2="33" stroke="#FFFFFF" stroke-width="1.5"/>
+  <line x1="46" y1="37" x2="54" y2="37" stroke="#FFFFFF" stroke-width="1.5"/>
+  <line x1="46" y1="41" x2="54" y2="41" stroke="#FFFFFF" stroke-width="1.5"/>
+  
+  <!-- Checkmark on ballot -->
+  <polyline points="47,36 49,38 53,34" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Slot in ballot box -->
+  <rect x="42" y="44" width="16" height="2" fill="#E67E3D"/>
+</svg>
